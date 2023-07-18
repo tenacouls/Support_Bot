@@ -1,6 +1,6 @@
 # Support_Bot
 This bot will contains some feauters that become helpful for tech support and users.
-I hope that this bot will be handsome.
+I hope that this bot will be useful.
 
 Steps to enroll:
 
