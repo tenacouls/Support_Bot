@@ -6,16 +6,16 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 TOKEN = '6332766112:AAEjq_fSBrHXA5WdMKFm_3zpIrVxQ4mvxw4'
 BOT_USERNAME: Final = "@DocrobotSupport_bot"
 
-db_path = '/home/makeouthill/BOT_DB/Clients_DataBase'
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
+#db_path = '/home/makeouthill/BOT_DB/Clients_DataBase'
+#conn = sqlite3.connect(db_path)
+#cursor = conn.cursor()
 
 #Описание команд для (start,help custom)
-async def start_command(update: Update, context: Bot):
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await update.message.reply_text('Добрый день! Спасибо, что обратились за поддержкой именно ко мне, буду рад помочь вам, прошу, введите ваш ИНН чтобы я мог знать какой организации требуется моя помощь')
 
-async def help_command(update: Update, context: Bot):
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await update.message.reply_text('Я могу выполнять следующие функции!')
     
@@ -26,11 +26,17 @@ async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
 # Ответы от бота на сообщения пользователя
 
-def handle_response(update: Update, context: Bot) -> str:
+def handle_response(text: str) -> str:
+    processed: str = text.lower()
     
+    if 'привет' in processed:
+        return 'Добрый день!'
+    
+    return 'Пока я не понимаю данные запросы'
+    
+    """
     try:
         inn: int = update.message.chat.type
-        text
     except ValueError:
         update.message.reply_text('Введите корректное число.')
         return
@@ -48,10 +54,11 @@ def handle_response(update: Update, context: Bot) -> str:
         print('Ошибка:', e)
     
     updater = Update(TOKEN, use_context=True)
-
+    """
 
 # Ответ от бота при если он числится в груповом чате.
-async def handle_message(update: Update, context: Bot):
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    
     message_type: str = update.message.chat.type
     text: str = update.message.text
     
@@ -64,12 +71,12 @@ async def handle_message(update: Update, context: Bot):
         else:
             return
     else:
-        response: str = handle_message(text)
+        response: str = handle_response(text)
     print('Bot', response)
-    await update.message.reply_text(response)
+    await update.message.reply_text(context)
     
-    
-async def error(update: Update, context: Bot):
+#Обработка ошибок
+async def error(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(f'{update} cause of error {context.error}')
     
     
