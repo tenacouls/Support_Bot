@@ -1,4 +1,5 @@
-import sqlite3
+from typing import Final
+
 from typing import Final
 from telegram import Update, Bot
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
@@ -12,27 +13,32 @@ BOT_USERNAME: Final = "@DocrobotSupport_bot"
 
 #Описание команд для (start,help custom)
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    
     await update.message.reply_text('Добрый день! Спасибо, что обратились за поддержкой именно ко мне, буду рад помочь вам, прошу, введите ваш ИНН чтобы я мог знать какой организации требуется моя помощь')
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    
     await update.message.reply_text('Я могу выполнять следующие функции!')
     
 async def custom_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    
     await update.message.reply_text('Здесь будет доп описание')
 
     
 # Ответы от бота на сообщения пользователя
 
-def handle_response(text: str) -> str:
+def handle_response(update,text: str) -> str:
+    # Create your own response logic
     processed: str = text.lower()
-    
-    if 'привет' in processed:
-        return 'Добрый день!'
-    
-    return 'Пока я не понимаю данные запросы'
+
+    if 'hello' in processed:
+        return 'Hey there!'
+
+    if 'how are you' in processed:
+        return 'I\'m good!'
+
+    if 'i love python' in processed:
+        return 'Remember to subscribe!'
+
+    return 'I don\'t understand'
+
     
     """
     try:
